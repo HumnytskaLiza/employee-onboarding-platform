@@ -1,11 +1,10 @@
-// File: app/page.tsx
-import { neon } from "@neondatabase/serverless";
+import styles from "@/app/ui/modules/home.module.css";
+import Image from "next/image";
 
 export default function Page() {
   return (
-    <form>
-      <input type="text" placeholder="write a comment" name="comment" />
-      <button type="submit">Submit</button>
-    </form>
+    <div className="w-full h-screen">
+      <div className="">Welcome, User</div>
+    </div>
   );
 }

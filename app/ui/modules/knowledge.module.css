@@ -1,0 +1,23 @@
+.folder {
+  aspect-ratio: 1 / 1;
+}
+
+.red {
+  fill: #f2a9a5;
+}
+
+.yellow {
+  fill: #f5dc8c;
+}
+
+.purple {
+  fill: #d1bdeb;
+}
+
+.blue {
+  fill: #a1c6ec;
+}
+
+.dark {
+  filter: brightness(85%);
+}

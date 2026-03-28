@@ -1,0 +1,6 @@
+.padding {
+  width: 100vw;
+  height: 100vh;
+  flex: 1;
+  padding: calc(var(--spacing) * 5);
+}
