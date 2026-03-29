@@ -1,25 +1,39 @@
 const links = [
+  {
+    name: "Dashboard",
+    href: "/",
+  },
   { name: "Employees", href: "/employees" },
   {
-    name: "Knowledge",
+    name: "Knowledge Base",
     href: "/knowledge",
+  },
+  {
+    name: "AI Assistant",
+    href: "/assistant",
+  },
+  {
+    name: "Calendar",
+    href: "/calendar",
   },
 ];
 
 export default function NavLinks() {
   return (
-    <>
+    <div className="flex flex-col">
       {links.map((link) => {
         return (
           <a
             key={link.name}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className="border-gray-300 border-t p-2 text-sm font-medium m-0 
+            hover:bg-gray-100 md:flex-none md:justify-start md:p-4 md:px-3
+            "
           >
             <p className="hidden md:block">{link.name}</p>
           </a>
         );
       })}
-    </>
+    </div>
   );
 }

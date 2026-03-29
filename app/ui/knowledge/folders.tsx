@@ -2,6 +2,7 @@ import { nanoid } from "nanoid";
 import folderSvg from "../../../public/folder.svg";
 import Image from "next/image";
 import styles from "@/app/ui/modules/knowledge.module.css";
+import Link from "next/link";
 
 const folders = [
   {
@@ -63,10 +64,11 @@ const folders = [
 ];
 
 // function addFolder(type, color) {}
+// function deleteFolder(type, color) {}
 
 export default function Folders() {
   return (
-    <div className="grid gap-x-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {folders.map((folder) => {
         const maxLength = 16;
         const labelName =
@@ -79,26 +81,27 @@ export default function Folders() {
             ? folder.createdDate.slice(0, maxLength) + "…"
             : folder.createdDate;
         return (
-          <a
+          <Link
             key={folder.id}
             href={`/knowledge/${folder.id}`}
-            className="hover:brightness-85 duration-100"
+            className={styles.folder}
           >
             <div>
               <svg
                 className={`${styles.folder}`}
-                viewBox="0 0 32 32"
+                viewBox="1 4 30 24"
                 preserveAspectRatio="none"
               >
                 <g>
                   <path
-                    className={`${styles[folder.color]} ${styles.dark}`}
+                    className={`${styles[folder.color]} ${styles.dark} ${styles["folder-dark"]}`}
                     d="M28,7v3c0,0.55-0.45,1-1,1H16c-0.35,0-0.68-0.18-0.86-0.49l-1.8-3c-0.1801-0.3-0.19-0.69-0.01-1 C13.51,6.19,13.84,6,14.2,6H27C27.55,6,28,6.45,28,7z"
                   ></path>
                 </g>
                 <g>
                   <path
-                    className={styles[folder.color]}
+                    className={`${styles[folder.color]} ${styles["folder-main"]}`}
+                    id="folder"
                     d="M31,10v17c0,0.55-0.45,1-1,1H2c-0.55,0-1-0.45-1-1V5c0-0.55,0.45-1,1-1h11c0.35,0,0.68,0.18,0.86,0.49 L16.57,9H30C30.55,9,31,9.45,31,10z"
                   ></path>
                 </g>
@@ -118,13 +121,24 @@ export default function Folders() {
                   textAnchor="start"
                   dominantBaseline="middle"
                   fontSize="2.2"
-                  className="uppercase font-semibold"
+                  className="font-medium"
                 >
                   {labelName}
                 </text>
+                <svg height="4" width="4" viewBox="0 0 32 32" x="3" y="6">
+                  <g className={styles["more-btn"]}>
+                    <rect width="32" height="32" rx="16" fill="white" />
+                    <g transform="translate(8, 8)">
+                      <path
+                        d="M8 4C7.17157 4 6.5 3.32843 6.5 2.5C6.5 1.67157 7.17157 1 8 1C8.82843 1 9.5 1.67157 9.5 2.5C9.5 3.32843 8.82843 4 8 4ZM8 9.5C7.17157 9.5 6.5 8.82843 6.5 8C6.5 7.17157 7.17157 6.5 8 6.5C8.82843 6.5 9.5 7.17157 9.5 8C9.5 8.82843 8.82843 9.5 8 9.5ZM6.5 13.5C6.5 14.3284 7.17157 15 8 15C8.82843 15 9.5 14.3284 9.5 13.5C9.5 12.6716 8.82843 12 8 12C7.17157 12 6.5 12.6716 6.5 13.5Z"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                  </g>
+                </svg>
               </svg>
             </div>
-          </a>
+          </Link>
         );
       })}
     </div>

@@ -1,23 +1,39 @@
 .folder {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 30 / 24;
+  transition: 100ms;
 }
 
 .red {
-  fill: #f2a9a5;
+  fill: #cce7d9;
 }
 
 .yellow {
-  fill: #f5dc8c;
+  fill: #ecdaa2;
 }
 
 .purple {
-  fill: #d1bdeb;
+  fill: #d4d4f8;
 }
 
 .blue {
-  fill: #a1c6ec;
+  fill: #c1dbf5;
 }
 
 .dark {
   filter: brightness(85%);
+}
+
+.folder:hover .folder-main {
+  filter: brightness(85%);
+  transition: 100ms;
+}
+
+.folder:hover .folder-dark {
+  filter: brightness(70%);
+  transition: 100ms;
+}
+
+.more-btn:hover {
+  filter: brightness(85%);
+  transition: 100ms;
 }

@@ -1,3 +1,9 @@
+import Header from "@/app/ui/header";
+
 export default function Page() {
-  return <div>Folder page</div>;
+  return (
+    <div>
+      <Header name="📔 Knowledge Base" />
+    </div>
+  );
 }
