@@ -3,6 +3,8 @@
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { signOut } from "@/auth";
+import { Folder } from "./definitions";
+import { fetchColorById } from "./data";
 
 export async function authenticate(
   prevState: string | undefined,
@@ -25,4 +27,15 @@ export async function authenticate(
 
 export async function logOutAction() {
   await signOut({ redirectTo: "/login" });
+}
+
+export async function getFolderColor(folders: Folder[]) {
+  const foldersWithColors = await Promise.all(
+    folders.map(async (folder) => {
+      const hex = await fetchColorById(folder.color_id);
+      return { ...folder, colorHex: hex };
+    }),
+  );
+
+  return foldersWithColors;
 }

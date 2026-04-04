@@ -1,89 +1,25 @@
-import { nanoid } from "nanoid";
-import folderSvg from "../../../public/folder.svg";
-import Image from "next/image";
 import styles from "@/app/ui/modules/knowledge.module.css";
 import Link from "next/link";
-
-const folders = [
-  {
-    name: "Developer Knowledge",
-    color: "red",
-    type: "role-based",
-    createdDate: "26.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "Designer Knowledge",
-    color: "yellow",
-    type: "role-based",
-    createdDate: "25.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "HR Knowledge",
-    color: "purple",
-    type: "corporate",
-    createdDate: "28.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "Company Policy",
-    color: "blue",
-    type: "corporate",
-    createdDate: "26.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "Designer Knowledge",
-    color: "yellow",
-    type: "role-based",
-    createdDate: "22.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "HR Knowledge",
-    color: "purple",
-    type: "corporate",
-    createdDate: "22.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-  {
-    name: "Company Policy",
-    color: "blue",
-    type: "corporate",
-    createdDate: "22.03.2026",
-    parentId: null,
-    id: nanoid(16),
-  },
-];
+import { FoldersProps } from "@/lib/definitions";
 
 // function addFolder(type, color) {}
 // function deleteFolder(type, color) {}
 
-export default function Folders() {
+export default async function Folders({ elements }: FoldersProps) {
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-      {folders.map((folder) => {
+      {elements.map((element) => {
         const maxLength = 16;
         const labelName =
-          folder.name.length > maxLength
-            ? folder.name.slice(0, maxLength) + "…"
-            : folder.name;
+          element.name.length > maxLength
+            ? element.name.slice(0, maxLength) + "…"
+            : element.name;
 
-        const labelDate =
-          folder.createdDate.length > maxLength
-            ? folder.createdDate.slice(0, maxLength) + "…"
-            : folder.createdDate;
+        const labelDate = element.created_date.toLocaleDateString("uk-UA");
         return (
           <Link
-            key={folder.id}
-            href={`/knowledge/${folder.id}`}
+            key={element.id}
+            href={`/knowledge/${element.unique_id}`}
             className={styles.folder}
           >
             <div>
@@ -94,13 +30,15 @@ export default function Folders() {
               >
                 <g>
                   <path
-                    className={`${styles[folder.color]} ${styles.dark} ${styles["folder-dark"]}`}
+                    fill={element.colorHex}
+                    className={`${styles.dark} ${styles["folder-dark"]}`}
                     d="M28,7v3c0,0.55-0.45,1-1,1H16c-0.35,0-0.68-0.18-0.86-0.49l-1.8-3c-0.1801-0.3-0.19-0.69-0.01-1 C13.51,6.19,13.84,6,14.2,6H27C27.55,6,28,6.45,28,7z"
                   ></path>
                 </g>
                 <g>
                   <path
-                    className={`${styles[folder.color]} ${styles["folder-main"]}`}
+                    fill={element.colorHex}
+                    className={`${styles["folder-main"]}`}
                     id="folder"
                     d="M31,10v17c0,0.55-0.45,1-1,1H2c-0.55,0-1-0.45-1-1V5c0-0.55,0.45-1,1-1h11c0.35,0,0.68,0.18,0.86,0.49 L16.57,9H30C30.55,9,31,9.45,31,10z"
                   ></path>

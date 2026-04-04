@@ -1,27 +1,30 @@
 export type User = {
-  id: string;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
   password: string;
   created_date: Date;
+  unique_id: string;
 };
 
 export type Resource = {
-  id: string;
+  id: number;
   name: string;
   content: Buffer;
   type: "corporate" | "role-based";
   parent_id?: string;
   created_date: Date;
+  unique_id: string;
 };
 
 export type Folder = {
   id: number;
   name: string;
-  color: string;
-  parent_id?: number;
+  color_id: string;
+  parent_id?: string;
   created_date: Date;
+  unique_id: string;
 };
 
 export type Color = {
@@ -29,4 +32,17 @@ export type Color = {
   name: string;
   hex: string;
   created_date: Date;
+  unique_id: string;
+};
+
+export type FoldersProps = {
+  elements: {
+    colorHex: string;
+    id: number;
+    name: string;
+    color_id: string;
+    parent_id?: string;
+    created_date: Date;
+    unique_id: string;
+  }[];
 };
