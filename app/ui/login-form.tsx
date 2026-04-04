@@ -1,20 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
-import { authenticate } from "../../lib/actions";
-import { useSearchParams } from "next/navigation";
+// import { useActionState } from "react";
+// import { authenticate } from "../../lib/actions";
+// import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined,
-  );
+  // const searchParams = useSearchParams();
+  // const callbackUrl = searchParams.get("callbackUrl") || "/";
+  // const [errorMessage, formAction, isPending] = useActionState(
+  //   authenticate,
+  //   undefined,
+  // );
 
   return (
     <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form action={formAction} className="space-y-6">
+      {/* <form action={formAction} className="space-y-6"> */}
+      <form className="space-y-6">
         <div>
           <label htmlFor="email" className="block text-sm/6 font-medium ">
             Email address
@@ -58,11 +59,11 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <input type="hidden" name="redirectTo" value={callbackUrl} />
           <button
             type="submit"
-            aria-disabled={isPending}
+            // aria-disabled={isPending}
             className="flex w-full justify-center rounded-md bg-[#cce7d9] px-3 py-1.5 text-sm/6 font-semibold hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
             Sign in
@@ -78,7 +79,7 @@ export default function LoginForm() {
               </>
             )}
           </div>
-        </div>
+        </div> */}
       </form>
     </div>
   );
