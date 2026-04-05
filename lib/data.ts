@@ -83,3 +83,19 @@ export async function fetchFolderById(unique_id: string) {
     throw new Error("Failed to fetch folder.");
   }
 }
+
+export async function createFolder(
+  unique_id: string,
+  name: string,
+  color_id: string,
+  parent_id: string | null,
+) {
+  try {
+    await sql<Folder>`INSERT INTO folders (unique_id, name, color_id, parent_id)
+      VALUES (${unique_id}, ${name}, ${color_id}, ${parent_id ?? null})
+      ON CONFLICT (id) DO NOTHING;`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create folder.");
+  }
+}

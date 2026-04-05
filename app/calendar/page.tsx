@@ -1,3 +1,5 @@
+import Header from "../ui/header";
+
 export default function Page() {
-  return <p>Calendar</p>;
+  return <Header name={"🗓️ Calendar"} type="header" />;
 }

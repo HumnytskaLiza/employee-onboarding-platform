@@ -1,7 +1,5 @@
+import Header from "./ui/header";
+
 export default function Page() {
-  return (
-    <div>
-      <div className="">Welcome, User</div>
-    </div>
-  );
+  return <Header name={"👋 Hello, User"} type={"header"} />;
 }

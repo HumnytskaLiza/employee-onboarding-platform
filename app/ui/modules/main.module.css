@@ -9,7 +9,7 @@
   gap: calc(var(--spacing) * 6);
 }
 
-.btn {
+.btn-secondary {
   padding: 8px 16px;
   background-color: white;
   border-radius: 50px;
@@ -22,8 +22,27 @@
   font-size: small;
 }
 
-.btn:hover {
+.btn-main {
+  padding: 8px 16px;
+  background-color: rgb(97, 144, 97);
+  border-radius: 50px;
+  transition: 100ms;
+  border: 1px solid rgb(48, 92, 49);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 500;
+  font-size: small;
+  color: white;
+}
+
+.btn-secondary:hover {
   filter: brightness(85%);
+  cursor: pointer;
+}
+
+.btn-main:hover {
+  background-color: rgb(79, 122, 79);
   cursor: pointer;
 }
 

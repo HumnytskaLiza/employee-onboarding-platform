@@ -1,5 +1,5 @@
 import Header from "../ui/header";
 
 export default function Page() {
-  return <Header name={"🤖 AI Assistant"} type="header" />;
+  return <Header name={"📖 Journeys"} type="header" />;
 }
