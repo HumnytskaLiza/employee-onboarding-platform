@@ -4,26 +4,19 @@ import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
 import Input from "../input";
-import { Color } from "@/lib/definitions";
-import { createFolderAction } from "@/lib/actions";
+import { createStandardUserAction } from "@/lib/actions";
+import { InputsDataUser, CreateUserPopupProps } from "@/lib/definitions";
 
-type CreateFolderPopupProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  colors: Color[];
-  unique_id?: string;
-};
-
-export default function CreateFolderPopup({
+export default function CreateUserPopup({
   isOpen,
   onClose,
-  colors,
-  unique_id,
-}: CreateFolderPopupProps) {
-  const [inputsData, setInputsData] = useState({
-    name: "",
-    color_id: colors[0].unique_id,
-    parent_id: unique_id ? unique_id : null,
+}: CreateUserPopupProps) {
+  const [inputsData, setInputsData] = useState<InputsDataUser>({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "12345",
+    job_position: "Developer",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,59 +46,47 @@ export default function CreateFolderPopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"📂 Add A New Folder"} type="subheader" />
-                <Input
-                  required={true}
-                  name={"name"}
-                  onChange={handleInputChange}
-                  placeholder={"Folder Name"}
-                />
-                <Input
-                  required={true}
-                  name={"color_id"}
-                  type={"hidden"}
-                  onChange={handleInputChange}
-                  value={inputsData.color_id}
-                  placeholder={"Folder Name"}
-                />
-                <Input
-                  required={true}
-                  name={"parent_id"}
-                  type={"hidden"}
-                  onChange={handleInputChange}
-                  value={inputsData.parent_id ?? ""}
-                  placeholder={"Folder Name"}
-                />
-                <div className="flex flex-row gap-2 mt-2">
-                  {colors.map((color) => {
-                    return (
-                      <button
-                        type="button"
-                        key={color.unique_id}
-                        name={color.name}
-                        style={{ backgroundColor: color.hex }}
-                        onClick={() =>
-                          setInputsData((data) => ({
-                            ...data,
-                            color_id: color.unique_id,
-                          }))
-                        }
-                        className={`w-9 h-9 rounded-4xl cursor-pointer ${
-                          inputsData.color_id === color.unique_id
-                            ? "border border-gray-400 ring-2 ring-gray-300"
-                            : ""
-                        }`}
-                      ></button>
-                    );
-                  })}
+                <Header name={"🙋 Add A New User"} type="subheader" />
+                <div className="flex flex-row gap-4">
+                  <Input
+                    required={true}
+                    name={"first_name"}
+                    onChange={handleInputChange}
+                    placeholder={"John"}
+                  />
+                  <Input
+                    required={true}
+                    name={"last_name"}
+                    onChange={handleInputChange}
+                    placeholder={"Doe"}
+                  />
                 </div>
+                <Input
+                  required={true}
+                  name={"email"}
+                  type={"email"}
+                  onChange={handleInputChange}
+                  placeholder={"noreply@gmail.com"}
+                />
+                <Input
+                  required={true}
+                  name={"job_position"}
+                  onChange={handleInputChange}
+                  options={[
+                    "Developer",
+                    "Designer",
+                    "HR",
+                    "QA",
+                    "Project Manager",
+                  ]}
+                />
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
               <Button
                 onClick={() => {
                   startTransition(async () => {
-                    await createFolderAction(inputsData);
+                    await createStandardUserAction(inputsData);
                     onClose();
                   });
                 }}

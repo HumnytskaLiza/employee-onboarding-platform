@@ -6,6 +6,8 @@ export type User = {
   password: string;
   created_date: Date;
   unique_id: string;
+  role: "admin" | "standard";
+  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
 };
 
 export type Resource = {
@@ -25,6 +27,7 @@ export type Folder = {
   parent_id?: string;
   created_date: Date;
   unique_id: string;
+  path: string[];
 };
 
 export type Color = {
@@ -46,3 +49,22 @@ export type FoldersProps = {
     unique_id: string;
   }[];
 };
+
+export type InputsDataUser = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+};
+
+export type CreateUserPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export type EmployeesTableProps = {
+  users: User[];
+};
+
+export type KnowledgePageProps = { params: Promise<{ unique_id: string }> };

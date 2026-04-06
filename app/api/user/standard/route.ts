@@ -1,23 +1,30 @@
-import { fetchParentFolders, createFolder } from "@/lib/data";
+import { fetchStandardUsers, createStandardUser } from "@/lib/data";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const schema = z.object({
   unique_id: z.string(),
-  name: z.string().min(1),
-  color_id: z.string(),
-  parent_id: z.string().nullable(),
-  path: z.array(z.string()),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string(),
+  password: z.string(),
+  job_position: z.enum([
+    "Developer",
+    "Designer",
+    "HR",
+    "QA",
+    "Project Manager",
+  ]),
 });
 
 export async function GET() {
   try {
-    const data = await fetchParentFolders();
+    const data = await fetchStandardUsers();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Failed to fetch folders:", error);
+    console.error("Failed to fetch users:", error);
     return NextResponse.json(
-      { message: "Failed to fetch folders." },
+      { message: "Failed to fetch users." },
       { status: 500 },
     );
   }
@@ -31,9 +38,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    const { unique_id, name, color_id, parent_id, path } = parsed.data;
+    const { unique_id, first_name, last_name, email, password, job_position } =
+      parsed.data;
 
-    await createFolder(unique_id, name, color_id, parent_id, path);
+    await createStandardUser(
+      unique_id,
+      first_name,
+      last_name,
+      email,
+      password,
+      job_position,
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

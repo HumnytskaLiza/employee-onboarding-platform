@@ -1,9 +1,38 @@
 import { sql } from "@vercel/postgres";
 import { User, Resource, Folder, Color } from "./definitions";
 
-export async function fetchUsers() {
+export async function fetchStandardUsers() {
   try {
-    const data = await sql<User>`SELECT * FROM users`;
+    const data = await sql<User>`SELECT * FROM users WHERE role = 'standard'`;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch users.");
+  }
+}
+
+export async function createStandardUser(
+  unique_id: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  password: string,
+  job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager",
+) {
+  try {
+    await sql<Folder>`INSERT INTO users (unique_id, first_name, last_name, email, password, role, job_position)
+      VALUES (${unique_id}, ${first_name}, ${last_name}, ${email}, ${password}, 'standard', ${job_position})
+      ON CONFLICT (id) DO NOTHING;`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create a user.");
+  }
+}
+
+export async function fetchAdminUsers() {
+  try {
+    const data = await sql<User>`SELECT * FROM users WHERE role = 'admin'`;
 
     return data.rows;
   } catch (error) {
@@ -89,13 +118,26 @@ export async function createFolder(
   name: string,
   color_id: string,
   parent_id: string | null,
+  path: string[],
 ) {
   try {
-    await sql<Folder>`INSERT INTO folders (unique_id, name, color_id, parent_id)
-      VALUES (${unique_id}, ${name}, ${color_id}, ${parent_id ?? null})
+    await sql<Folder>`INSERT INTO folders (unique_id, name, color_id, parent_id, path)
+      VALUES (${unique_id}, ${name}, ${color_id}, ${parent_id ?? null}, ${path.join(",")})
       ON CONFLICT (id) DO NOTHING;`;
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to create folder.");
+  }
+}
+
+export async function fetchFoldersInPath(path: string[]) {
+  try {
+    const folders =
+      await sql<Folder>`SELECT * FROM folders WHERE unique_id IN (${path.join(",")})`;
+
+    return folders.rows.map((folder) => folder.name);
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch folders.");
   }
 }
