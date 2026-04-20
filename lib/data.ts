@@ -1,3 +1,5 @@
+import "server-only";
+
 import { sql } from "@vercel/postgres";
 import { User, File, Folder, Color, Chat } from "./definitions";
 

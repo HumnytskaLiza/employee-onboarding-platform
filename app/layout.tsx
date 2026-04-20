@@ -6,6 +6,8 @@ import SideNav from "@/app/ui/sidenav";
 import Navbar from "./ui/navbar";
 import "@/app/ui/globals.css";
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
