@@ -204,7 +204,7 @@ export async function createFile(
 ) {
   try {
     await sql<File>`INSERT INTO files (content, name, folder_id, type, unique_id, id)
-      VALUES (${content}, ${name}, ${folder_id ?? null}, ${type}, ${unique_id},  ${unique_id})
+      VALUES ("", ${name}, ${folder_id ?? null}, ${type}, ${unique_id},  ${unique_id})
       ON CONFLICT (id) DO NOTHING;`;
   } catch (error) {
     console.error("Database Error:", error);
