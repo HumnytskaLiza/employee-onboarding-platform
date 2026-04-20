@@ -32,6 +32,17 @@ export default function CreateFolderPopup({
     console.log(inputsData);
   };
 
+  function validateData() {
+    if (!inputsData.name || !inputsData.color_id) {
+      alert("Provide all required information before creating the folder");
+    } else {
+      startTransition(async () => {
+        await createFolderAction(inputsData);
+        onClose();
+      });
+    }
+  }
+
   const [isPending, startTransition] = useTransition();
 
   if (!isOpen) return null;
@@ -103,12 +114,7 @@ export default function CreateFolderPopup({
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
               <Button
-                onClick={() => {
-                  startTransition(async () => {
-                    await createFolderAction(inputsData);
-                    onClose();
-                  });
-                }}
+                onClick={validateData}
                 text={isPending ? "Creating..." : "Create"}
                 type="main"
                 buttonType="button"

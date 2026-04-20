@@ -1,9 +1,13 @@
+"use client";
+
 import styles from "@/app/ui/modules/main.module.css";
 type ButtonProps = {
-  text: string;
-  type: "main" | "secondary";
+  text?: string;
+  type: "main" | "secondary" | "delete";
   buttonType: "button" | "submit";
+  disabled?: boolean;
   svg?: string;
+  url?: string;
   onClick?: () => void;
 };
 
@@ -12,14 +16,20 @@ export default function Button({
   buttonType,
   type,
   svg,
+  disabled,
   onClick,
 }: ButtonProps) {
   return (
     <button
       type={buttonType}
+      disabled={disabled}
       onClick={onClick}
       className={
-        type == "main" ? `${styles["btn-main"]}` : `${styles["btn-secondary"]}`
+        type == "main"
+          ? `${styles["btn-main"]}`
+          : type == "secondary"
+            ? `${styles["btn-secondary"]}`
+            : `${styles["btn-delete"]}`
       }
     >
       {svg && (
@@ -32,7 +42,7 @@ export default function Button({
           ></path>
         </svg>
       )}
-      <span>{text}</span>
+      {text && <span>{text}</span>}
     </button>
   );
 }

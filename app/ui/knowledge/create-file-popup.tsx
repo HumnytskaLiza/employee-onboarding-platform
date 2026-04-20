@@ -4,41 +4,52 @@ import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
 import Input from "../input";
-import { createStandardUserAction } from "@/lib/actions";
-import { InputsDataUser, CreateUserPopupProps } from "@/lib/definitions";
+import { createFileAction } from "@/lib/actions";
 
-export default function CreateUserPopup({
+type CreateFilePopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  unique_id?: string;
+};
+
+export default function CreateFilePopup({
   isOpen,
   onClose,
-}: CreateUserPopupProps) {
-  const [inputsData, setInputsData] = useState<InputsDataUser>({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "12345",
-    job_position: "Developer",
+  unique_id,
+}: CreateFilePopupProps) {
+  type InputsData = {
+    name: string;
+    content: File | null;
+    folder_id: string | null;
+  };
+
+  const [inputsData, setInputsData] = useState<InputsData>({
+    name: "",
+    content: null,
+    folder_id: unique_id ?? null,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, type, files, value } = e.target;
+
+    if (type === "file") {
+      setInputsData((data) => ({
+        ...data,
+        content: files?.[0] ?? null,
+      }));
+      return;
+    }
+
     setInputsData((data) => ({ ...data, [name]: value }));
     console.log(inputsData);
   };
 
   function validateData() {
-    if (!inputsData.first_name || !inputsData.last_name || !inputsData.email) {
-      alert(
-        "Provide all required information about the employee before saving",
-      );
-    } else if (
-      !inputsData.email.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      )
-    ) {
-      alert("Email is invalid!");
+    if (!inputsData.name || !inputsData.content) {
+      alert("Provide all required information before creating the folder");
     } else {
       startTransition(async () => {
-        await createStandardUserAction(inputsData);
+        await createFileAction(inputsData);
         onClose();
       });
     }
@@ -65,39 +76,18 @@ export default function CreateUserPopup({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex flex-col gap-4 m-3">
-                <Header name={"🙋 Add A New User"} type="subheader" />
-                <div className="flex flex-row gap-4">
-                  <Input
-                    required={true}
-                    name={"first_name"}
-                    onChange={handleInputChange}
-                    placeholder={"John"}
-                  />
-                  <Input
-                    required={true}
-                    name={"last_name"}
-                    onChange={handleInputChange}
-                    placeholder={"Doe"}
-                  />
-                </div>
+                <Header name={"📂 Add A New Folder"} type="subheader" />
                 <Input
                   required={true}
-                  name={"email"}
-                  type={"email"}
+                  name={"name"}
                   onChange={handleInputChange}
-                  placeholder={"noreply@gmail.com"}
+                  placeholder={"File Name"}
                 />
                 <Input
                   required={true}
-                  name={"job_position"}
+                  name={"content"}
+                  type={"file"}
                   onChange={handleInputChange}
-                  options={[
-                    "Developer",
-                    "Designer",
-                    "HR",
-                    "QA",
-                    "Project Manager",
-                  ]}
                 />
               </div>
             </div>

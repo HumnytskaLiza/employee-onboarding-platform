@@ -4,10 +4,12 @@ type InputProps = {
   name: string;
   required: boolean;
   placeholder?: string;
-  type?: "hidden" | "email";
+  type?: "hidden" | "email" | "file";
+  style?: "round" | "square";
   options?: string[];
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: { key: string }) => void;
 };
 
 export default function Input({
@@ -17,6 +19,7 @@ export default function Input({
   type,
   value,
   options,
+  style,
   onChange,
 }: InputProps) {
   return !options ? (
@@ -29,7 +32,11 @@ export default function Input({
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      className={styles.input}
+      className={
+        style == "round"
+          ? `${styles.input} rounded-4xl`
+          : `${styles.input} rounded-md`
+      }
     />
   ) : (
     <div className="relative">

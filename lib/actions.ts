@@ -7,8 +7,11 @@ import { Folder } from "./definitions";
 import {
   fetchColorById,
   createFolder,
-  fetchFolderById,
   createStandardUser,
+  addMessage,
+  deleteChat,
+  createChat,
+  createFile,
 } from "./data";
 import { nanoid } from "nanoid";
 
@@ -18,12 +21,28 @@ type InputsDataFolder = {
   parent_id: string | null;
 };
 
+type InputsDataFile = {
+  content: File | null;
+  name: string;
+  folder_id: string | null;
+};
+
 type InputsDataUser = {
   first_name: string;
   last_name: string;
   email: string;
   password: string;
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
+};
+
+type InputsDataMessage = {
+  message: string;
+  role: string;
+  chatId: string;
+};
+
+type InputsDataChat = {
+  name: string;
 };
 
 // export async function authenticate(
@@ -62,20 +81,12 @@ export async function getFolderColor(folders: Folder[]) {
 
 export async function createFolderAction(formData: InputsDataFolder) {
   const unique_id = nanoid(16);
-  let path: string[] = [];
-
-  if (formData.parent_id) {
-    const data = await fetchFolderById(formData.parent_id);
-    path = data.folder.rows[0].path;
-  }
-  path.push(unique_id);
 
   await createFolder(
     unique_id,
     formData.name,
     formData.color_id,
     formData.parent_id,
-    path,
   );
 }
 
@@ -90,4 +101,39 @@ export async function createStandardUserAction(formData: InputsDataUser) {
     formData.password,
     formData.job_position,
   );
+}
+
+export async function addMessageAction(messageData: InputsDataMessage) {
+  const id = nanoid(16);
+
+  const res = await addMessage(
+    id,
+    messageData.message,
+    messageData.role,
+    messageData.chatId,
+  );
+
+  return res;
+}
+
+export async function deleteChatAction(unique_id: string) {
+  await deleteChat(unique_id);
+}
+
+export async function createChatAction(formData: InputsDataChat) {
+  const unique_id = nanoid(16);
+
+  await createChat(unique_id, formData.name);
+}
+
+export async function createFileAction(formData: InputsDataFile) {
+  const unique_id = nanoid(16);
+
+  if (formData.content === null) return;
+
+  const arrayBuffer = await formData.content.arrayBuffer();
+  const content = Buffer.from(arrayBuffer);
+  const type = formData.content.type;
+
+  await createFile(content, formData.name, formData.folder_id, type, unique_id);
 }

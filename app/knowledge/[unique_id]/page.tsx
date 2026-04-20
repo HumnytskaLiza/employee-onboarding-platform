@@ -1,10 +1,10 @@
-import { fetchFolderById, fetchAllColors } from "@/lib/data";
+import { fetchFolderById, fetchAllColors, fetchAllFiles } from "@/lib/data";
 import { getFolderColor } from "@/lib/actions";
 import { KnowledgePageProps } from "@/lib/definitions";
 
 import Header from "@/app/ui/header";
 import UtilityBar from "@/app/ui/knowledge/utility-bar";
-import Folders from "@/app/ui/knowledge/folders";
+import Folders from "@/app/ui/knowledge/knowledge-data";
 // import Breadcrumbs from "@/app/ui/breadcrumbs";
 
 export default async function Page({ params }: KnowledgePageProps) {
@@ -12,13 +12,14 @@ export default async function Page({ params }: KnowledgePageProps) {
   const data = await fetchFolderById(unique_id);
   const colors = await fetchAllColors();
   const foldersWithColors = await getFolderColor(data.children.rows);
+  const files = await fetchAllFiles();
 
   return (
     <div className="h-full">
       <Header name="📔 Knowledge Base" type="header" />
       {/* <Breadcrumbs url="/knowledge/" /> */}
       <UtilityBar colors={colors} unique_id={unique_id} />
-      <Folders elements={foldersWithColors} />
+      <Folders elementsFolders={foldersWithColors} elementsFiles={files} />
     </div>
   );
 }

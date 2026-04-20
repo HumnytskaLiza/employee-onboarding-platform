@@ -22,18 +22,9 @@ export default async function EmployeesTable({ users }: EmployeesTableProps) {
             </div>
             <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
               <p className="text-sm/6 text-gray-900">{user.job_position}</p>
-              {user.created_date ? (
-                <p className="mt-1 text-xs/5 text-gray-500">
-                  Added <span>{user.created_date.toDateString()}</span>
-                </p>
-              ) : (
-                <div className="mt-1 flex items-center gap-x-1.5">
-                  <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                    <div className="size-1.5 rounded-full bg-emerald-500" />
-                  </div>
-                  <p className="text-xs/5 text-gray-500">Online</p>
-                </div>
-              )}
+              <p className="mt-1 text-xs/5 text-gray-500">
+                Added <span>{user.created_date.toDateString()}</span>
+              </p>
             </div>
           </div>
           <Button text="View" type="main" buttonType="button" />

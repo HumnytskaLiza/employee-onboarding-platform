@@ -1,23 +1,20 @@
-import { fetchParentFolders, createFolder } from "@/lib/data";
+import { fetchChatHistory, createChat } from "@/lib/data";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import z from "zod";
 
 const schema = z.object({
   unique_id: z.string(),
-  name: z.string().min(1),
-  color_id: z.string(),
-  parent_id: z.string().nullable(),
-  path: z.array(z.string()),
+  name: z.string(),
 });
 
 export async function GET() {
   try {
-    const data = await fetchParentFolders();
+    const data = await fetchChatHistory();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Failed to fetch folders:", error);
+    console.error("Failed to fetch chats:", error);
     return NextResponse.json(
-      { message: "Failed to fetch folders." },
+      { message: "Failed to fetch chats." },
       { status: 500 },
     );
   }
@@ -31,15 +28,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    const { unique_id, name, color_id, parent_id } = parsed.data;
+    const { unique_id, name } = parsed.data;
 
-    await createFolder(unique_id, name, color_id, parent_id);
+    await createChat(unique_id, name);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Failed to create a folder.", error);
+    console.error("Failed to create a chat.", error);
     return NextResponse.json(
-      { message: `Failed to create a folder: ${error}` },
+      { message: "Failed to create a chat." },
       { status: 500 },
     );
   }

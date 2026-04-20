@@ -10,12 +10,13 @@ export type User = {
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
 };
 
-export type Resource = {
+export type File = {
   id: number;
   name: string;
   content: Buffer;
-  type: "corporate" | "role-based";
-  parent_id?: string;
+  // type: "corporate" | "role-based";
+  type: string;
+  folder_id?: string;
   created_date: Date;
   unique_id: string;
 };
@@ -30,6 +31,25 @@ export type Folder = {
   path: string[];
 };
 
+export type Message = {
+  id?: number;
+  role: string;
+  message: string;
+};
+
+export type Chat = {
+  id: number;
+  name: string;
+  created_date: Date;
+  unique_id: string;
+  messages: Message[];
+};
+
+export type ChatProps = {
+  unique_id: string;
+  data: Message[];
+};
+
 export type Color = {
   id: number;
   name: string;
@@ -38,8 +58,8 @@ export type Color = {
   unique_id: string;
 };
 
-export type FoldersProps = {
-  elements: {
+export type KnowledgeDataProps = {
+  elementsFolders: {
     colorHex: string;
     id: number;
     name: string;
@@ -47,6 +67,15 @@ export type FoldersProps = {
     parent_id?: string;
     created_date: Date;
     unique_id: string;
+  }[];
+  elementsFiles: {
+    content: Uint8Array;
+    id: number;
+    name: string;
+    folder_id?: string;
+    created_date: Date;
+    unique_id: string;
+    type: string;
   }[];
 };
 
@@ -58,13 +87,35 @@ export type InputsDataUser = {
   job_position: "Developer" | "Designer" | "HR" | "QA" | "Project Manager";
 };
 
+export type InputsDataChat = {
+  name: string;
+};
+
 export type CreateUserPopupProps = {
   isOpen: boolean;
   onClose: () => void;
+};
+
+export type CreateChatPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export type DeleteChatPopupProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  uniqueId: string;
+  name: string;
 };
 
 export type EmployeesTableProps = {
   users: User[];
 };
 
+export type ChatHistoryProps = {
+  chats: Chat[];
+};
+
 export type KnowledgePageProps = { params: Promise<{ unique_id: string }> };
+
+export type AssistantPageProps = { params: Promise<{ unique_id: string }> };

@@ -3,6 +3,12 @@
   transition: 100ms;
 }
 
+.file {
+  transform: rotate(90deg) matrix(-1, 0, 0, 1, 0, 0);
+  aspect-ratio: 30 / 25;
+  transition: 100ms;
+}
+
 .red {
   fill: #cce7d9;
 }
@@ -35,5 +41,15 @@
 
 .more-btn:hover {
   filter: brightness(85%);
+  transition: 100ms;
+}
+
+.file:hover .file-main {
+  filter: brightness(85%);
+  transition: 100ms;
+}
+
+.file:hover .file-dark {
+  filter: brightness(70%);
   transition: 100ms;
 }

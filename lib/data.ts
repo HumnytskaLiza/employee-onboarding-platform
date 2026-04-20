@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { User, Resource, Folder, Color } from "./definitions";
+import { User, File, Folder, Color, Chat } from "./definitions";
 
 export async function fetchStandardUsers() {
   try {
@@ -38,17 +38,6 @@ export async function fetchAdminUsers() {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch users.");
-  }
-}
-
-export async function fetchDocuments() {
-  try {
-    const data = await sql<Resource>`SELECT * FROM documents`;
-
-    return data.rows;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch resources.");
   }
 }
 
@@ -118,11 +107,10 @@ export async function createFolder(
   name: string,
   color_id: string,
   parent_id: string | null,
-  path: string[],
 ) {
   try {
-    await sql<Folder>`INSERT INTO folders (unique_id, name, color_id, parent_id, path)
-      VALUES (${unique_id}, ${name}, ${color_id}, ${parent_id ?? null}, ${path.join(",")})
+    await sql<Folder>`INSERT INTO folders (unique_id, name, color_id, parent_id)
+      VALUES (${unique_id}, ${name}, ${color_id}, ${parent_id ?? null})
       ON CONFLICT (id) DO NOTHING;`;
   } catch (error) {
     console.error("Database Error:", error);
@@ -139,5 +127,121 @@ export async function fetchFoldersInPath(path: string[]) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch folders.");
+  }
+}
+
+export async function fetchChatHistory() {
+  try {
+    const data = await sql<Chat>`SELECT * FROM chats`;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch chat history.");
+  }
+}
+
+export async function fetchChatById(unique_id: string) {
+  try {
+    const data =
+      await sql<Chat>`SELECT * FROM chats WHERE unique_id = ${unique_id}`;
+
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch chat.");
+  }
+}
+
+export async function addMessage(
+  id: string,
+  message: string,
+  role: string,
+  chatId: string,
+) {
+  try {
+    await sql<Chat>`UPDATE chats SET messages = COALESCE(messages, '[]'::jsonb) || jsonb_build_array(
+                      jsonb_build_object(
+                        'id', ${id}::text,
+                        'message', ${message}::text,
+                        'role', ${role}::text
+                      )
+                    )
+                    WHERE unique_id = ${chatId}`;
+    return { success: true };
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to add message: ${error}`);
+  }
+}
+
+export async function deleteChat(unique_id: string) {
+  try {
+    await sql`DELETE FROM chats WHERE unique_id = ${unique_id}`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to delete chat: ${error}`);
+  }
+}
+
+export async function createChat(unique_id: string, name: string) {
+  try {
+    await sql<Folder>`INSERT INTO chats (unique_id, name)
+      VALUES (${unique_id}, ${name})
+      ON CONFLICT (id) DO NOTHING;`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to create a chat.");
+  }
+}
+
+export async function createFile(
+  content: Buffer,
+  name: string,
+  folder_id: string | null,
+  type: string,
+  unique_id: string,
+) {
+  try {
+    await sql<File>`INSERT INTO files (content, name, folder_id, type, unique_id, id)
+      VALUES (${content}, ${name}, ${folder_id ?? null}, ${type}, ${unique_id},  ${unique_id})
+      ON CONFLICT (id) DO NOTHING;`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error(`Failed to add file: ${error}`);
+  }
+}
+
+export async function fetchAllFiles() {
+  try {
+    const data = await sql<File>`SELECT * FROM files`;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch files.");
+  }
+}
+
+export async function fetchParentFiles() {
+  try {
+    const data = await sql<File>`SELECT * FROM files WHERE folder_id IS NULL`;
+
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch files.");
+  }
+}
+
+export async function fetchFileById(unique_id: string) {
+  try {
+    const file =
+      await sql<File>`SELECT * FROM files WHERE unique_id = ${unique_id}`;
+
+    return file.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch file.");
   }
 }
