@@ -3,6 +3,8 @@ import UtilityBar from "../ui/employees/utility-bar";
 import EmployeesTable from "../ui/employees/employees-table";
 import { fetchStandardUsers } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const people = await fetchStandardUsers();
   return (
