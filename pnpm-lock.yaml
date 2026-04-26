@@ -86,6 +86,9 @@ importers:
       react-dom:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
+      swr:
+        specifier: ^2.4.1
+        version: 2.4.1(react@19.2.3)
       tailwind-merge:
         specifier: ^3.5.0
         version: 3.5.0

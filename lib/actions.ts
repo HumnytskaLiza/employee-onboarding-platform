@@ -3,9 +3,7 @@
 // import { signIn } from "@/auth";
 // import { AuthError } from "next-auth";
 // import { signOut } from "@/auth";
-import { Folder } from "./definitions";
 import {
-  fetchColorById,
   createFolder,
   createStandardUser,
   addMessage,
@@ -17,7 +15,7 @@ import { nanoid } from "nanoid";
 
 type InputsDataFolder = {
   name: string;
-  color_id: string;
+  color_hex: string;
   parent_id: string | null;
 };
 
@@ -68,24 +66,13 @@ type InputsDataChat = {
 //   await signOut({ redirectTo: "/login" });
 // }
 
-export async function getFolderColor(folders: Folder[]) {
-  const foldersWithColors = await Promise.all(
-    folders.map(async (folder) => {
-      const hex = await fetchColorById(folder.color_id);
-      return { ...folder, colorHex: hex };
-    }),
-  );
-
-  return foldersWithColors;
-}
-
 export async function createFolderAction(formData: InputsDataFolder) {
   const unique_id = nanoid(16);
 
   await createFolder(
     unique_id,
     formData.name,
-    formData.color_id,
+    formData.color_hex,
     formData.parent_id,
   );
 }

@@ -5,76 +5,63 @@ type FolderElementProps = {
   name: string;
   createdDate: Date;
   uniqueId: string;
-  colorHex: string;
+  color_hex: string;
+  isEmpty: boolean;
 };
 
 export default function FolderElement({
   name,
   createdDate,
   uniqueId,
-  colorHex,
+  color_hex,
 }: FolderElementProps) {
   const maxLength = 16;
   const labelName =
     name.length > maxLength ? name.slice(0, maxLength) + "…" : name;
 
-  const labelDate = createdDate.toLocaleDateString("uk-UA");
+  const labelDate = new Date(createdDate).toLocaleDateString("uk-UA");
 
   return (
     <Link href={`/knowledge/${uniqueId}`} className={styles.folder}>
-      <div>
-        <svg
-          className={`${styles.folder}`}
-          viewBox="1 3 30 25"
-          preserveAspectRatio="none"
-        >
-          <g>
-            <path
-              fill={colorHex}
-              className={`${styles.dark} ${styles["folder-dark"]}`}
-              d="M28,7v3c0,0.55-0.45,1-1,1H16c-0.35,0-0.68-0.18-0.86-0.49l-1.8-3c-0.1801-0.3-0.19-0.69-0.01-1 C13.51,6.19,13.84,6,14.2,6H27C27.55,6,28,6.45,28,7z"
-            ></path>
-          </g>
-          <g>
-            <path
-              fill={colorHex}
-              className={`${styles["folder-main"]}`}
-              id="folder"
-              d="M31,10v17c0,0.55-0.45,1-1,1H2c-0.55,0-1-0.45-1-1V5c0-0.55,0.45-1,1-1h11c0.35,0,0.68,0.18,0.86,0.49 L16.57,9H30C30.55,9,31,9.45,31,10z"
-            ></path>
-          </g>
-          <text
-            x="3"
-            y="21"
-            textAnchor="start"
-            dominantBaseline="middle"
-            fontSize="2"
-            className="uppercase"
-          >
-            {labelDate}
-          </text>
-          <text
-            x="3"
-            y="25"
-            textAnchor="start"
-            dominantBaseline="middle"
-            fontSize="2.2"
-            className="font-medium"
+      <div
+        className="flex-1 relative 
+        rounded-t-2xl border border-gray-300"
+        style={{ backgroundColor: color_hex }}
+      >
+        <div className="absolute inset-0 bg-black/10 rounded-t-2xl z-0" />
+        <div className="relative h-full bg-white m-3 box-border rounded-t-xl z-2"></div>
+      </div>
+      <div
+        style={{ backgroundColor: color_hex }}
+        className={`flex-3 p-4 border border-gray-300 
+          ${styles["folder-main"]} rounded-2xl flex flex-row items-end justify-between z-3`}
+      >
+        <div className="flex flex-col">
+          <h3
+            className={`text-md font-semibold ${color_hex === "#eae4da" ? "text-black" : "text-white"} uppercase leading-tight`}
           >
             {labelName}
-          </text>
-          <svg height="4" width="4" viewBox="0 0 32 32" x="3" y="6">
-            <g className={styles["more-btn"]}>
-              <rect width="32" height="32" rx="16" fill="white" />
-              <g transform="translate(8, 8)">
-                <path
-                  d="M8 4C7.17157 4 6.5 3.32843 6.5 2.5C6.5 1.67157 7.17157 1 8 1C8.82843 1 9.5 1.67157 9.5 2.5C9.5 3.32843 8.82843 4 8 4ZM8 9.5C7.17157 9.5 6.5 8.82843 6.5 8C6.5 7.17157 7.17157 6.5 8 6.5C8.82843 6.5 9.5 7.17157 9.5 8C9.5 8.82843 8.82843 9.5 8 9.5ZM6.5 13.5C6.5 14.3284 7.17157 15 8 15C8.82843 15 9.5 14.3284 9.5 13.5C9.5 12.6716 8.82843 12 8 12C7.17157 12 6.5 12.6716 6.5 13.5Z"
-                  fill="currentColor"
-                ></path>
-              </g>
-            </g>
+          </h3>
+          <p
+            className={`text-xs ${color_hex === "#eae4da" ? "text-gray-900" : "text-gray-100"} mt-1`}
+          >
+            {labelDate}
+          </p>
+        </div>
+        <div
+          className="w-8 h-8 rounded-3xl bg-white border border-gray-300
+        flex justify-center items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+          >
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
           </svg>
-        </svg>
+        </div>
       </div>
     </Link>
   );

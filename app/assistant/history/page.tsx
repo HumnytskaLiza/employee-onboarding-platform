@@ -2,6 +2,8 @@ import Header from "../../ui/header";
 import ChatHistory from "@/app/ui/chat/chat-history";
 import { fetchChatHistory } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const chats = await fetchChatHistory();
   return (

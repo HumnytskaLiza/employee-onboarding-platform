@@ -4,30 +4,32 @@ import { useState } from "react";
 import CreateFolderPopup from "./create-folder-popup";
 import CreateFilePopup from "./create-file-popup";
 import Button from "../button";
-import { Color } from "@/lib/definitions";
 
 type UtilityBarProps = {
-  colors: Color[];
   unique_id?: string;
 };
 
-export default function UtilityBar({ colors, unique_id }: UtilityBarProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function UtilityBar({ unique_id }: UtilityBarProps) {
+  const [isFolderOpen, setIsFolderOpen] = useState(false);
+  const [isFileOpen, setIsFileOpen] = useState(false);
 
-  const handleClose = () => setIsOpen(false);
-  const handleOpen = () => setIsOpen(true);
+  const handleFolderClose = () => setIsFolderOpen(false);
+  const handleFolderOpen = () => setIsFolderOpen(true);
+
+  const handleFileClose = () => setIsFileOpen(false);
+  const handleFileOpen = () => setIsFileOpen(true);
 
   return (
     <div className="flex flex-row w-fit gap-2">
       <Button
-        onClick={handleOpen}
+        onClick={handleFolderOpen}
         buttonType="button"
         text="Create Folder"
         type="secondary"
         svg="M14.5 12.5V4H8.83333C8.29241 4 7.76607 3.82456 7.33333 3.5L6 2.5H1.5V12.5C1.5 13.0523 1.94772 13.5 2.5 13.5H13.5C14.0523 13.5 14.5 13.0523 14.5 12.5ZM1.5 1H0V2.5V12.5C0 13.8807 1.11929 15 2.5 15H13.5C14.8807 15 16 13.8807 16 12.5V4V2.5H14.5H8.83333C8.61696 2.5 8.40643 2.42982 8.23333 2.3L6.76667 1.2C6.59357 1.07018 6.38304 1 6.16667 1H1.5ZM5.25 8H6H7.25V6.75V6H8.75V6.75V8H10H10.75V9.5H10H8.75V10.75V11.5H7.25V10.75V9.5H6H5.25V8Z"
       />
       <Button
-        onClick={handleOpen}
+        onClick={handleFileOpen}
         text="Add File"
         buttonType="button"
         type="secondary"
@@ -41,15 +43,14 @@ export default function UtilityBar({ colors, unique_id }: UtilityBarProps) {
       />
 
       <CreateFolderPopup
-        isOpen={isOpen}
-        onClose={handleClose}
-        colors={colors}
+        isOpen={isFolderOpen}
+        onClose={handleFolderClose}
         unique_id={unique_id}
       />
 
       <CreateFilePopup
-        isOpen={isOpen}
-        onClose={handleClose}
+        isOpen={isFileOpen}
+        onClose={handleFileClose}
         unique_id={unique_id}
       />
     </div>

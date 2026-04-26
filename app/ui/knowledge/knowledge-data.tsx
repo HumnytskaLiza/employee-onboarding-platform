@@ -1,30 +1,55 @@
-import { KnowledgeDataProps } from "@/lib/definitions";
+"use client";
+
+import useSWR, { Key } from "swr";
+import { Folder, File, KnowledgeDataProps } from "@/lib/definitions";
 import FolderElement from "./folder-element";
 import FileElement from "./file-element";
 
-export default async function knowledgeData({
-  elementsFolders,
-  elementsFiles,
-}: KnowledgeDataProps) {
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+type FolderResponse = {
+  current: Folder | null;
+  folders: Folder[];
+  files: File[];
+};
+
+export default function KnowledgeData({ params }: KnowledgeDataProps) {
+  const keyFolder: Key = params.unique_id
+    ? `/api/folder/${params.unique_id}`
+    : "/api/folder";
+
+  const { data } = useSWR<FolderResponse>(keyFolder, fetcher, {
+    fallbackData: {
+      current: null,
+      folders: [],
+      files: [],
+    },
+    refreshInterval: 1000,
+  });
+
+  const folders = data?.folders;
+  const files = data?.files;
+
   return (
     <div
       className={
-        elementsFolders.length > 0 || elementsFiles.length > 0
-          ? "grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+        folders?.length !== 0 || files?.length !== 0
+          ? "grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
           : "flex justify-center items-center h-[80%]"
       }
     >
-      {elementsFolders.map((element) => (
+      {folders?.map((element) => (
         <FolderElement
+          isEmpty={element.has_children}
           key={element.id}
           name={element.name}
           createdDate={element.created_date}
           uniqueId={element.unique_id}
-          colorHex={element.colorHex}
+          color_hex={element.color_hex}
         />
       ))}
 
-      {elementsFiles.map((element, id) => (
+      {files?.map((element) => (
         <FileElement
           key={element.id}
           name={element.name}
@@ -33,7 +58,7 @@ export default async function knowledgeData({
         />
       ))}
 
-      {elementsFolders.length === 0 && elementsFiles.length === 0 && (
+      {folders?.length === 0 && files?.length === 0 && (
         <div className="flex flex-col gap-4 text-center font-medium text-gray-500">
           <span>No files has been added yet...</span>
           <span>Create a new folder or add a file here</span>

@@ -1,4 +1,4 @@
-import { fetchColorById } from "@/lib/data";
+import { fetchFolders } from "@/lib/data";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -7,13 +7,13 @@ export async function GET(
 ) {
   try {
     const { unique_id } = await context.params;
-    const data = await fetchColorById(unique_id);
+    const data = await fetchFolders(unique_id);
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Failed to fetch color:", error);
+    console.error("Failed to fetch folder:", error);
     return NextResponse.json(
-      { message: "Failed to fetch color." },
+      { message: "Failed to fetch folder." },
       { status: 500 },
     );
   }

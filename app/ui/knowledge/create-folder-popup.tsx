@@ -4,25 +4,24 @@ import { useState, useTransition } from "react";
 import Button from "../button";
 import Header from "../header";
 import Input from "../input";
-import { Color } from "@/lib/definitions";
 import { createFolderAction } from "@/lib/actions";
 
 type CreateFolderPopupProps = {
   isOpen: boolean;
   onClose: () => void;
-  colors: Color[];
   unique_id?: string;
 };
 
 export default function CreateFolderPopup({
   isOpen,
   onClose,
-  colors,
   unique_id,
 }: CreateFolderPopupProps) {
+  const colors = ["#eae4da", "#4b607f", "#808bc5", "#ed773c"];
+
   const [inputsData, setInputsData] = useState({
     name: "",
-    color_id: colors[0].unique_id,
+    color_hex: colors[0],
     parent_id: unique_id ? unique_id : null,
   });
 
@@ -33,7 +32,7 @@ export default function CreateFolderPopup({
   };
 
   function validateData() {
-    if (!inputsData.name || !inputsData.color_id) {
+    if (!inputsData.name || !inputsData.color_hex) {
       alert("Provide all required information before creating the folder");
     } else {
       startTransition(async () => {
@@ -76,7 +75,7 @@ export default function CreateFolderPopup({
                   name={"color_id"}
                   type={"hidden"}
                   onChange={handleInputChange}
-                  value={inputsData.color_id}
+                  value={inputsData.color_hex}
                   placeholder={"Folder Name"}
                 />
                 <Input
@@ -88,23 +87,23 @@ export default function CreateFolderPopup({
                   placeholder={"Folder Name"}
                 />
                 <div className="flex flex-row gap-2 mt-2">
-                  {colors.map((color) => {
+                  {colors.map((color, id) => {
                     return (
                       <button
                         type="button"
-                        key={color.unique_id}
-                        name={color.name}
-                        style={{ backgroundColor: color.hex }}
+                        key={id}
+                        name={color}
+                        style={{ backgroundColor: color }}
                         onClick={() =>
                           setInputsData((data) => ({
                             ...data,
-                            color_id: color.unique_id,
+                            color_hex: color,
                           }))
                         }
                         className={`w-9 h-9 rounded-4xl cursor-pointer ${
-                          inputsData.color_id === color.unique_id
+                          inputsData.color_hex === color
                             ? "border border-gray-400 ring-2 ring-gray-300"
-                            : ""
+                            : "border border-gray-400"
                         }`}
                       ></button>
                     );

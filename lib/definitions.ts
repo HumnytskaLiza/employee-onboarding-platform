@@ -13,22 +13,21 @@ export type User = {
 export type File = {
   id: number;
   name: string;
-  content: Buffer;
-  // type: "corporate" | "role-based";
-  type: string;
+  content: Uint8Array;
   folder_id?: string;
   created_date: Date;
   unique_id: string;
+  type: string;
 };
 
 export type Folder = {
   id: number;
   name: string;
-  color_id: string;
+  color_hex: string;
   parent_id?: string;
   created_date: Date;
   unique_id: string;
-  path: string[];
+  has_children: boolean;
 };
 
 export type Message = {
@@ -48,35 +47,6 @@ export type Chat = {
 export type ChatProps = {
   unique_id: string;
   data: Message[];
-};
-
-export type Color = {
-  id: number;
-  name: string;
-  hex: string;
-  created_date: Date;
-  unique_id: string;
-};
-
-export type KnowledgeDataProps = {
-  elementsFolders: {
-    colorHex: string;
-    id: number;
-    name: string;
-    color_id: string;
-    parent_id?: string;
-    created_date: Date;
-    unique_id: string;
-  }[];
-  elementsFiles: {
-    content: Uint8Array;
-    id: number;
-    name: string;
-    folder_id?: string;
-    created_date: Date;
-    unique_id: string;
-    type: string;
-  }[];
 };
 
 export type InputsDataUser = {
@@ -117,5 +87,11 @@ export type ChatHistoryProps = {
 };
 
 export type KnowledgePageProps = { params: Promise<{ unique_id: string }> };
+
+export type KnowledgeDataProps = {
+  params: {
+    unique_id?: string;
+  };
+};
 
 export type AssistantPageProps = { params: Promise<{ unique_id: string }> };

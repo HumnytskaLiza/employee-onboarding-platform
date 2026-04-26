@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CreateChatPopup from "../ui/chat/create-new-chat";
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
 
